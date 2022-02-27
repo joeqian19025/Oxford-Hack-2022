@@ -1,22 +1,32 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
-class Message {
+class nMessage {
   int senderId;
   DateTime sendTime;
   int priority;
   var message;
-  int msID;
 
-  bool operator <(Message a) {
-    if (this.priority != a.priority) {
-      return this.priority < a.priority;
-    } else {
-      return this.sendTime.isAfter(a.sendTime);
-    }
+  String toJson() {
+    return jsonEncode({
+      "senderId": senderId,
+      "sendTime": sendTime.toString(),
+      "priority": priority,
+      "message": message
+    });
   }
 
+  nMessage({this.senderId, this.sendTime, this.message, this.priority});
+
   int messageID() {
-    return md5.convert([senderId] + utf8.encode(sendTime.toString())).hashCode;
+    return md5.convert(utf8.encode(message.toString())).hashCode;
+  }
+
+  String toPost() {
+    String post = '';
+    this
+        .message
+        .forEach((k, v) => post += k.toString() + ': ' + v.toString() + '\n');
+    return post;
   }
 }

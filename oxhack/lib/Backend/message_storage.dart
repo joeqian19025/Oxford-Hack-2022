@@ -1,10 +1,18 @@
 import 'message.dart';
 
 class MessageStorage {
-  List<Message> messages = [];
+  List<nMessage> messages;
 
-  bool addMessage(Message x) {
-    messages.add(x);
+  MessageStorage() {
+    messages = List<nMessage>();
+  }
+
+  bool addMessage(nMessage x) {
+    messages.forEach((element) {
+      if (element.messageID() == x.messageID()) return false;
+    });
+
+    messages = [x] + messages;
     return true;
   }
 }
